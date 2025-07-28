@@ -66,8 +66,7 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 ├── src/
 │   ├── main/                 # Server-side Clojure code
 │   │   ├── core.clj         # HTTP server and routing
-│   │   ├── render.clj       # SSR rendering logic
-│   │   └── static.clj       # Static site generator
+│   │   └── render.clj       # SSR rendering logic
 │   └── app/
 │       ├── common/          # Shared CLJC code
 │       │   └── components.cljc
@@ -78,6 +77,9 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 │           ├── home.cljs    # Home page hydration
 │           └── about.cljs   # About page hydration
 ├── resources/public/        # Static assets and generated HTML
+├── dev/                     # Development and build tools
+│   ├── build.clj           # Static site generator
+│   └── user.clj            # REPL utilities and helpers
 ├── deps.edn                # Clojure dependencies
 ├── shadow-cljs.edn         # Shadow-cljs configuration
 ├── package.json            # NPM dependencies
@@ -88,8 +90,9 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 
 1. **Universal Components**: Pages are written in `.cljc` files, allowing them to be rendered on both server and client
 2. **Server Rendering**: The server uses `uix.dom.server/render-to-string` to generate HTML
-3. **Client Hydration**: JavaScript bundles use `uix.dom.client/hydrate-root` to make the static HTML interactive
+3. **Client Hydration**: JavaScript bundles use `uix.dom/hydrate-root` to make the static HTML interactive
 4. **Code Splitting**: Each page gets its own JS bundle (home.js, about.js) plus a shared bundle
+5. **Dev Tooling**: Build scripts and development utilities are kept in the `dev/` directory following Clojure conventions
 
 ## Adding New Pages
 
@@ -127,12 +130,45 @@ The generated static files in `resources/public/` can be deployed to any static 
 
 Simply upload the contents of `resources/public/` to your hosting provider.
 
+## Development
+
+The `dev/` directory contains development and build utilities following Clojure conventions:
+
+- **dev/build.clj**: Static site generator script
+- **dev/user.clj**: REPL utilities and development helpers
+- **:dev alias**: Includes dev tools on classpath for REPL development
+- **:static alias**: Runs the static site generation
+
+You can start a REPL with dev tools available using:
+```bash
+clojure -M:dev
+```
+
+Example REPL workflow:
+```clojure
+;; Start development server
+(start-server)
+
+;; Generate static files
+(generate-static)
+
+;; Test individual page rendering
+(render-home)
+
+;; Clean generated files
+(clean)
+
+;; Stop server when done
+(stop-server)
+```
+
 ## Tips
 
 - Write components in `.cljc` files for universal rendering
 - Use `#?(:cljs ...)` reader conditionals for client-only code
 - Keep pages lightweight - heavy interactivity can be loaded after hydration
 - Test both SSR and hydrated versions during development
+- Build scripts and dev utilities belong in the `dev/` directory
 
 ## License
 

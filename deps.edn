@@ -13,7 +13,8 @@
         thheller/shadow-cljs {:mvn/version "2.26.0"}}
  
  :aliases
- {:dev {:extra-deps {nrepl/nrepl {:mvn/version "1.1.0"}
+ {:dev {:extra-paths ["dev"]
+        :extra-deps {nrepl/nrepl {:mvn/version "1.1.0"}
                      cider/cider-nrepl {:mvn/version "0.45.0"}}
         :jvm-opts ["-Xmx2G"]}
   
@@ -22,4 +23,5 @@
   
   :server {:main-opts ["-m" "main.core"]}
   
-  :static {:main-opts ["-m" "main.static"]}}}
+  :static {:extra-paths ["dev"]
+           :main-opts ["-m" "build"]}}}
