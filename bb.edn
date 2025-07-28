@@ -1,0 +1,46 @@
+{:tasks
+ {:requires ([babashka.fs :as fs]
+             [babashka.process :refer [shell]])
+  
+  :init (do (def project-root (str (fs/cwd))))
+  
+  clean {:doc "Clean build artifacts"
+         :task (do
+                 (println "Cleaning build artifacts...")
+                 (fs/delete-tree "resources/public/assets/js")
+                 (fs/delete-tree ".shadow-cljs")
+                 (fs/delete-if-exists "resources/public/index.html")
+                 (fs/delete-if-exists "resources/public/about.html")
+                 (println "Clean complete!"))}
+  
+  install {:doc "Install npm dependencies"
+           :task (shell "npm install")}
+  
+  dev {:doc "Start development server"
+       :task (do
+               (println "Starting development server...")
+               (println "Visit http://localhost:8080 for shadow-cljs")
+               (println "Visit http://localhost:3000 for Ring server")
+               (shell "npm run dev"))}
+  
+  server {:doc "Start Ring server for SSR"
+          :task (shell "clojure -M:server")}
+  
+  build-js {:doc "Build JavaScript bundles"
+            :task (do
+                    (println "Building JavaScript bundles...")
+                    (shell "npm run build"))}
+  
+  build-static {:doc "Generate static HTML files"
+                :task (do
+                        (println "Generating static HTML files...")
+                        (shell "clojure -M:static"))}
+  
+  build {:doc "Full production build"
+         :depends [clean build-js build-static]
+         :task (println "Build complete! Static site ready in resources/public/")}
+  
+  serve-static {:doc "Serve the static site locally"
+                :task (do
+                        (println "Serving static site on http://localhost:8000")
+                        (shell "cd resources/public && python3 -m http.server 8000"))}}}

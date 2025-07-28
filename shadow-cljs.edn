@@ -1,0 +1,28 @@
+{:source-paths ["src"]
+ 
+ :dependencies [[com.pitch/uix.core "1.1.0"]
+                [com.pitch/uix.dom "1.1.0"]]
+ 
+ :builds
+ {:app {:target :browser
+        :output-dir "resources/public/assets/js"
+        :asset-path "/assets/js"
+        
+        :modules
+        {:shared {:entries []}
+         
+         :home {:init-fn app.client.home/init
+                :depends-on #{:shared}}
+         
+         :about {:init-fn app.client.about/init
+                 :depends-on #{:shared}}}
+        
+        :devtools
+        {:http-root "resources/public"
+         :http-port 8080}}
+  
+  :test {:target :node-test
+         :output-to "out/test.js"
+         :autorun true}}
+ 
+ :dev-http {8080 {:root "resources/public"}}}

@@ -1,0 +1,42 @@
+# Clojure
+.cpcache/
+.nrepl-port
+.lein-repl-history
+.lein-failures
+pom.xml
+pom.xml.asc
+*.jar
+*.class
+/target/
+/checkouts/
+
+# Shadow-cljs
+.shadow-cljs/
+node_modules/
+resources/public/assets/js/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.calva/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated static files (comment out if you want to commit them)
+# resources/public/index.html
+# resources/public/about.html
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+
+.claude
+.clj-kondo
+.lsp
