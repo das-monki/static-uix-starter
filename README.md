@@ -13,12 +13,43 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 
 ## Prerequisites
 
+### Option 1: With Nix (Recommended)
+- [Nix package manager](https://nixos.org/download.html)
+- (Optional) [direnv](https://direnv.net/) for automatic environment loading
+
+### Option 2: Manual Installation
 - Java 11+
 - Node.js 16+
 - Clojure CLI tools
 - Babashka (optional, for task automation)
 
 ## Quick Start
+
+### Using Nix Development Shell
+
+1. **Enter the development shell:**
+   ```bash
+   nix develop
+   # or with direnv installed
+   direnv allow
+   ```
+
+2. **Run development commands:**
+   ```bash
+   # Start shadow-cljs development server
+   dev
+
+   # Start Ring server in another terminal
+   server
+
+   # Build the static site
+   build-all
+
+   # Serve static files
+   serve
+   ```
+
+### Using Traditional Setup
 
 1. **Install dependencies:**
    ```bash
@@ -83,7 +114,9 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 ├── deps.edn                # Clojure dependencies
 ├── shadow-cljs.edn         # Shadow-cljs configuration
 ├── package.json            # NPM dependencies
-└── bb.edn                  # Babashka tasks
+├── bb.edn                  # Babashka tasks
+├── flake.nix               # Nix flake configuration
+└── .envrc                  # direnv configuration
 ```
 
 ## How It Works
@@ -107,7 +140,27 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 5. Add route in `src/main/core.clj`
 6. Update `build/static.clj` to generate the static HTML
 
-## Available Tasks (Babashka)
+## Available Commands
+
+### Nix Development Shell Commands
+
+When using `nix develop`:
+
+- `dev` - Start shadow-cljs development server with hot reload
+- `server` - Start Ring server for SSR development
+- `static` - Generate static HTML files
+- `build-all` - Build JS bundles and generate static files
+- `serve` - Serve the static site locally on port 8000
+- `clean` - Clean generated files
+- `repl` - Start Clojure REPL with dev tools
+- `format` - Format Clojure code with cljfmt
+- `lint` - Run clj-kondo static analysis
+- `update-deps` - Update deps-lock.json for Nix builds
+- `build` - Build complete static site with Nix
+
+### Babashka Tasks
+
+If using Babashka directly:
 
 - `bb clean` - Remove build artifacts
 - `bb install` - Install npm dependencies
@@ -117,6 +170,21 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 - `bb build-static` - Generate static HTML
 - `bb build` - Full production build
 - `bb serve-static` - Serve static site locally
+
+## Building with Nix
+
+For reproducible builds using Nix:
+
+```bash
+# Build the static site
+nix build
+
+# The output will be in ./result/
+ls -la ./result/
+
+# Or build and copy to a specific location
+nix build && cp -r result/* /path/to/deployment/
+```
 
 ## Deployment
 

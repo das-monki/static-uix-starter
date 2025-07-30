@@ -37,6 +37,14 @@ npm-debug.log*
 .env
 .env.local
 
+# Nix
+result
+result-*
+.direnv/
+.devenv/
+.pre-commit-config.yaml
+
+# Development
 .claude
 .clj-kondo
 .lsp
