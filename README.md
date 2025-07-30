@@ -9,7 +9,7 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 - **Code Splitting**: Separate bundles for each page to minimize JavaScript payload
 - **Hot Reloading**: Fast development with shadow-cljs
 - **Static Site Generation**: Build fully static HTML files for deployment
-- **Modern Stack**: Clojure, ClojureScript, UIx (React wrapper), shadow-cljs
+- **Modern Stack**: Clojure, ClojureScript, UIx (React wrapper), shadow-cljs (via deps.edn)
 
 ## Prerequisites
 
@@ -51,17 +51,19 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 
 ### Using Traditional Setup
 
-1. **Install dependencies:**
+1. **Install npm dependencies (React only):**
    ```bash
-   npm install
+   npm install  # Installs React and React-DOM
    # or with Babashka
    bb install
    ```
 
+   Note: shadow-cljs is managed through deps.edn, not npm.
+
 2. **Development mode:**
    ```bash
    # Terminal 1: Start shadow-cljs
-   npm run dev
+   clojure -M -m shadow.cljs.devtools.cli watch app
    # or
    bb dev
 
@@ -78,7 +80,7 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
    ```bash
    bb build
    # or manually:
-   npm run build
+   clojure -M -m shadow.cljs.devtools.cli release app
    clojure -M:static
    ```
 

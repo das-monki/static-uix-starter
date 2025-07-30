@@ -21,7 +21,7 @@
                (println "Starting development server...")
                (println "Visit http://localhost:8080 for shadow-cljs")
                (println "Visit http://localhost:3000 for Ring server")
-               (shell "npm run dev"))}
+               (shell "clojure -M -m shadow.cljs.devtools.cli watch app"))}
   
   server {:doc "Start Ring server for SSR"
           :task (shell "clojure -M:server")}
@@ -29,7 +29,7 @@
   build-js {:doc "Build JavaScript bundles"
             :task (do
                     (println "Building JavaScript bundles...")
-                    (shell "npm run build"))}
+                    (shell "clojure -M -m shadow.cljs.devtools.cli release app"))}
   
   build-static {:doc "Generate static HTML files"
                 :task (do

@@ -48,9 +48,9 @@
 
           # Build time deps
           nativeBuildInputs = [
-            pkgs.jdk21
+            pkgs.jdk23
             pkgs.clojure
-            (pkgs.clojure.override { jdk = pkgs.jdk21; })
+            (pkgs.clojure.override { jdk = pkgs.jdk23; })
             clj-nix.packages.${system}.clj-builder
           ];
 
@@ -75,7 +75,7 @@
             clj-builder --patch-git-sha $(pwd)
 
             # Build JavaScript bundles
-            npx shadow-cljs release app
+            clojure -M -m shadow.cljs.devtools.cli release app
 
             # Generate static HTML files
             clojure -M:static
@@ -107,7 +107,7 @@
         "x86_64-darwin"
         "aarch64-linux"
       ];
-      
+
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
         inputs.devshell.flakeModule
@@ -140,8 +140,8 @@
               {
             default = {
               packages = [
-                pkgs.jdk21
-                (pkgs.clojure.override { jdk = pkgs.jdk21; })
+                pkgs.jdk23
+                (pkgs.clojure.override { jdk = pkgs.jdk23; })
                 pkgs.babashka
                 pkgs.nodePackages.npm
                 pkgs.nodejs
@@ -152,7 +152,7 @@
                 pkgs.nixfmt-rfc-style
                 pkgs.python3  # For serving static files
               ];
-              
+
               commands = [
                 {
                   name = "update-deps";
@@ -184,7 +184,7 @@
                     fi
                     ln -sf ${buildNodeModules}/node_modules ./node_modules
 
-                    npx shadow-cljs watch app
+                    clojure -M -m shadow.cljs.devtools.cli watch app
                   '';
                 }
                 {
@@ -205,7 +205,7 @@
                   name = "build-all";
                   help = "Build JS and generate static files";
                   command = ''
-                    npx shadow-cljs release app && clojure -M:static
+                    clojure -M -m shadow.cljs.devtools.cli release app && clojure -M:static
                   '';
                 }
                 {
@@ -258,7 +258,7 @@
                   '';
                 }
               ];
-              
+
               env = [
                 {
                   name = "NODE_PATH";
