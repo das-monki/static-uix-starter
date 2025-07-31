@@ -1,9 +1,9 @@
 {:tasks
  {:requires ([babashka.fs :as fs]
              [babashka.process :refer [shell]])
-  
+
   :init (do (def project-root (str (fs/cwd))))
-  
+
   clean {:doc "Clean build artifacts"
          :task (do
                  (println "Cleaning build artifacts...")
@@ -12,20 +12,20 @@
                  (fs/delete-if-exists "resources/public/index.html")
                  (fs/delete-if-exists "resources/public/about.html")
                  (println "Clean complete!"))}
-  
+
   install {:doc "Install npm dependencies"
            :task (shell "npm install")}
-  
+
   dev {:doc "Start development server"
        :task (do
                (println "Starting development server...")
                (println "Visit http://localhost:8080 for shadow-cljs")
                (println "Visit http://localhost:3000 for Ring server")
                (shell "clojure -M -m shadow.cljs.devtools.cli watch app"))}
-  
+
   server {:doc "Start Ring server for SSR"
           :task (shell "clojure -M:server")}
-  
+
   build {:doc "Build complete static site (JS + HTML)"
          :depends [clean]
          :task (do
@@ -34,7 +34,7 @@
                  (println "Generating static HTML files...")
                  (shell "clojure -M:static")
                  (println "Build complete! Static site ready in resources/public/"))}
-  
+
   serve-static {:doc "Serve the static site locally"
                 :task (do
                         (println "Serving static site on http://localhost:8000")
