@@ -36,17 +36,13 @@ A Clojure template for building static sites with shadow-cljs and UIx, featuring
 
 2. **Run development commands:**
    ```bash
-   # Start shadow-cljs development server
-   dev
+   # For development (in separate terminals):
+   dev      # Start shadow-cljs with hot reload
+   server   # Start Ring server for SSR
 
-   # Start Ring server in another terminal
-   server
-
-   # Build the static site
-   build-all
-
-   # Serve static files
-   serve
+   # For production:
+   build    # Build complete static site
+   serve    # Serve the built site locally
    ```
 
 ### Using Traditional Setup
@@ -150,35 +146,31 @@ When using `nix develop`:
 
 - `dev` - Start shadow-cljs development server with hot reload
 - `server` - Start Ring server for SSR development
-- `static` - Generate static HTML files
-- `build-all` - Build JS bundles and generate static files
+- `build` - Build complete static site (JS + HTML)
 - `serve` - Serve the static site locally on port 8000
 - `clean` - Clean generated files
 - `repl` - Start Clojure REPL with dev tools
 - `format` - Format Clojure code with cljfmt
 - `lint` - Run clj-kondo static analysis
 - `update-deps` - Update deps-lock.json for Nix builds
-- `build` - Build complete static site with Nix
 
 ### Babashka Tasks
 
 If using Babashka directly:
 
 - `bb clean` - Remove build artifacts
-- `bb install` - Install npm dependencies
+- `bb install` - Install npm dependencies (React only)
 - `bb dev` - Start development server
 - `bb server` - Start Ring server
-- `bb build-js` - Build JavaScript bundles
-- `bb build-static` - Generate static HTML
-- `bb build` - Full production build
+- `bb build` - Build complete static site (JS + HTML)
 - `bb serve-static` - Serve static site locally
 
 ## Building with Nix
 
-For reproducible builds using Nix:
+For reproducible builds using Nix (run outside `nix develop`):
 
 ```bash
-# Build the static site
+# Build the static site with Nix (reproducible)
 nix build
 
 # The output will be in ./result/
@@ -187,6 +179,8 @@ ls -la ./result/
 # Or build and copy to a specific location
 nix build && cp -r result/* /path/to/deployment/
 ```
+
+Note: Use `nix build` for CI/CD or when you need reproducible builds. Use `build` inside `nix develop` for faster local development.
 
 ## Deployment
 

@@ -26,19 +26,14 @@
   server {:doc "Start Ring server for SSR"
           :task (shell "clojure -M:server")}
   
-  build-js {:doc "Build JavaScript bundles"
-            :task (do
-                    (println "Building JavaScript bundles...")
-                    (shell "clojure -M -m shadow.cljs.devtools.cli release app"))}
-  
-  build-static {:doc "Generate static HTML files"
-                :task (do
-                        (println "Generating static HTML files...")
-                        (shell "clojure -M:static"))}
-  
-  build {:doc "Full production build"
-         :depends [clean build-js build-static]
-         :task (println "Build complete! Static site ready in resources/public/")}
+  build {:doc "Build complete static site (JS + HTML)"
+         :depends [clean]
+         :task (do
+                 (println "Building JavaScript bundles...")
+                 (shell "clojure -M -m shadow.cljs.devtools.cli release app")
+                 (println "Generating static HTML files...")
+                 (shell "clojure -M:static")
+                 (println "Build complete! Static site ready in resources/public/"))}
   
   serve-static {:doc "Serve the static site locally"
                 :task (do

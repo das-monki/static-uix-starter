@@ -169,13 +169,6 @@
                   '';
                 }
                 {
-                  name = "build";
-                  help = "Build static site";
-                  command = ''
-                    nix build .\#static-site
-                  '';
-                }
-                {
                   name = "dev";
                   help = "Start development server with hot reload";
                   command = ''
@@ -195,17 +188,14 @@
                   '';
                 }
                 {
-                  name = "static";
-                  help = "Generate static HTML files";
+                  name = "build";
+                  help = "Build complete static site (JS + HTML)";
                   command = ''
+                    echo "Building JavaScript bundles..."
+                    clojure -M -m shadow.cljs.devtools.cli release app
+                    echo "Generating static HTML files..."
                     clojure -M:static
-                  '';
-                }
-                {
-                  name = "build-all";
-                  help = "Build JS and generate static files";
-                  command = ''
-                    clojure -M -m shadow.cljs.devtools.cli release app && clojure -M:static
+                    echo "Build complete! Static site ready in resources/public/"
                   '';
                 }
                 {
