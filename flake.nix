@@ -191,11 +191,7 @@
                   name = "build";
                   help = "Build complete static site (JS + HTML)";
                   command = ''
-                    echo "Building JavaScript bundles..."
-                    clojure -M -m shadow.cljs.devtools.cli release app
-                    echo "Generating static HTML files..."
-                    clojure -M:static
-                    echo "Build complete! Static site ready in resources/public/"
+                    nix build .\#static-site
                   '';
                 }
                 {
