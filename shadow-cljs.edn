@@ -28,6 +28,13 @@
          :about {:init-fn app.client.about/init
                  :depends-on #{:shared}}}
 
+        ;; Separate build hooks for dev and release
+        :dev
+        {:build-hooks [(build.tailwind/start-watch!)]}
+
+        :release
+        {:build-hooks [(build.tailwind/compile-release!)]}
+
         :devtools
         {:http-root "resources/public"
          :http-port 8080}}

@@ -1,6 +1,7 @@
 {:tasks
  {:requires ([babashka.fs :as fs]
-             [babashka.process :refer [shell]])
+             [babashka.process :refer [shell]]
+             [babashka.process :as proc])
 
   :init (do (def project-root (str (fs/cwd))))
 
@@ -16,11 +17,13 @@
   install {:doc "Install npm dependencies"
            :task (shell "npm install")}
 
-  dev {:doc "Start development server"
+  dev {:doc "Start development server with Ring SSR and shadow-cljs watch"
        :task (do
-               (println "Starting development server...")
-               (println "Visit http://localhost:8080 for shadow-cljs")
-               (println "Visit http://localhost:3000 for Ring server")
+               (println "Starting development servers...")
+               (println "Ring server (SSR): http://localhost:3000")
+               (println "Shadow-cljs (assets): http://localhost:8080")
+               (println "Press Ctrl+C to stop both servers")
+               (future (shell "clojure -M:server"))
                (shell "clojure -M -m shadow.cljs.devtools.cli watch app"))}
 
   server {:doc "Start Ring server for SSR"

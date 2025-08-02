@@ -4,81 +4,56 @@
 
 (defui timeline-item [{:keys [year title description]}]
   ($ :div
-     {:style {:display "flex"
-              :margin-bottom "30px"
-              :padding-left "30px"
-              :border-left "3px solid #007bff"
-              :position "relative"}}
+     {:class "flex mb-8 pl-8 border-l-4 border-blue-500 relative"}
      ($ :div
-        {:style {:position "absolute"
-                 :left "-10px"
-                 :width "20px"
-                 :height "20px"
-                 :background "#007bff"
-                 :border-radius "50%"
-                 :border "3px solid white"}}
+        {:class "absolute -left-3 w-5 h-5 bg-blue-500 rounded-full border-4 border-white"}
         "")
      ($ :div
-        {:style {:margin-left "20px"}}
+        {:class "ml-5"}
         ($ :h4
-           {:style {:color "#007bff"
-                    :margin-bottom "5px"}}
+           {:class "text-blue-500 mb-1 font-semibold"}
            year)
         ($ :h3
-           {:style {:margin-bottom "10px"}}
+           {:class "mb-2 text-lg font-bold"}
            title)
         ($ :p
-           {:style {:color "#666"
-                    :line-height "1.6"}}
+           {:class "text-gray-600 leading-relaxed"}
            description))))
 
 (defui tech-stack []
   ($ :div
-     {:style {:background "#f8f9fa"
-              :padding "40px"
-              :border-radius "10px"
-              :margin "40px 0"}}
+     {:class "bg-gray-50 p-10 rounded-lg my-10"}
      ($ :h3
-        {:style {:margin-bottom "20px"}}
+        {:class "mb-5 text-xl font-bold"}
         "Technology Stack")
      ($ :div
-        {:style {:display "grid"
-                 :grid-template-columns "repeat(auto-fit, minmax(200px, 1fr))"
-                 :gap "20px"}}
+        {:class "grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5"}
         (for [tech ["Clojure" "ClojureScript" "UIx (React)" "shadow-cljs" "Ring" "Reitit"]]
           ($ :div
              {:key tech
-              :style {:background "white"
-                      :padding "15px"
-                      :border-radius "5px"
-                      :text-align "center"
-                      :box-shadow "0 2px 4px rgba(0,0,0,0.1)"}}
+              :class "bg-white p-4 rounded text-center shadow-sm"}
              tech)))))
 
 (defui about-page []
   ($ c/layout
      {:page-id :about}
      ($ :section
-        {:style {:padding "40px 0"}}
+        {:class "py-10"}
         ($ :h1
-           {:style {:text-align "center"
-                    :margin-bottom "40px"}}
+           {:class "text-center mb-10 text-4xl font-bold"}
            "About This Project")
         
         ($ :div
-           {:style {:max-width "800px"
-                    :margin "0 auto"}}
+           {:class "max-w-4xl mx-auto"}
            ($ :p
-              {:style {:font-size "1.2rem"
-                       :line-height "1.8"
-                       :margin-bottom "30px"}}
+              {:class "text-xl leading-relaxed mb-8"}
               "This template demonstrates how to build static sites with Clojure and ClojureScript, 
                combining the power of server-side rendering with client-side interactivity.")
            
            ($ tech-stack)
            
            ($ :h2
-              {:style {:margin "40px 0 30px"}}
+              {:class "my-10 mb-8 text-3xl font-bold"}
               "Project Timeline")
            
            ($ :div
@@ -96,10 +71,11 @@
                   :description "Open for contributions and improvements from the Clojure community."}))
            
            ($ :div
-              {:style {:text-align "center"
-                       :margin-top "60px"}}
-              ($ :h3 "Interactive Demo")
+              {:class "text-center mt-15"}
+              ($ :h3
+                 {:class "text-2xl font-bold mb-4"}
+                 "Interactive Demo")
               ($ :p
-                 {:style {:margin-bottom "20px"}}
+                 {:class "mb-5"}
                  "This counter component is hydrated on the client side:")
               ($ c/counter {:initial-value 42}))))))

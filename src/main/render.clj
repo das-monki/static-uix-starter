@@ -15,13 +15,10 @@
        "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
        "  <meta name=\"description\" content=\"" meta-description "\">\n"
        "  <title>" title "</title>\n"
-       "  <style>\n"
-       "    * { margin: 0; padding: 0; box-sizing: border-box; }\n"
-       "    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }\n"
-       "  </style>\n"
+       "  <link rel=\"stylesheet\" href=\"/assets/css/main.css\">\n"
        "</head>\n"
        "<body>\n"
-       content
+       "  <div id=\"root\">" content "</div>\n"
        (when script-src
          (str "\n  <script src=\"/assets/js/shared.js\"></script>\n"
               "  <script src=\"" script-src "\"></script>\n"))

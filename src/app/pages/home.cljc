@@ -4,20 +4,13 @@
 
 (defui hero-section []
   ($ :section
-     {:style {:text-align "center"
-              :padding "80px 20px"
-              :background "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-              :color "white"
-              :border-radius "10px"
-              :margin-bottom "40px"}}
+     {:class "text-center py-20 px-5 text-white rounded-lg mb-10"
+      :style {:background "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"}}
      ($ :h1
-        {:style {:font-size "3rem"
-                 :margin-bottom "20px"}}
+        {:class "text-5xl mb-5"}
         "Welcome to UIx Static Sites")
      ($ :p
-        {:style {:font-size "1.3rem"
-                 :max-width "600px"
-                 :margin "0 auto 30px"}}
+        {:class "text-xl max-w-2xl mx-auto mb-8"}
         "Build blazing fast static sites with Clojure, shadow-cljs, and UIx. Server-side rendering with client-side hydration.")
      ($ c/button
         {:variant :primary
@@ -27,40 +20,25 @@
 
 (defui feature-card [{:keys [title description icon]}]
   ($ :div
-     {:style {:padding "30px"
-              :border "1px solid #e0e0e0"
-              :border-radius "8px"
-              :text-align "center"
-              :transition "transform 0.3s, box-shadow 0.3s"
-              :cursor "pointer"}
-      :on-mouse-enter #?(:cljs #(set! (.-transform (.-style ^js (.-currentTarget %))) "translateY(-5px)")
-                         :clj nil)
-      :on-mouse-leave #?(:cljs #(set! (.-transform (.-style ^js (.-currentTarget %))) "translateY(0)")
-                         :clj nil)}
+     {:class "p-8 border border-gray-300 rounded-lg text-center transition-transform duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg"}
      ($ :div
-        {:style {:font-size "3rem"
-                 :margin-bottom "20px"}}
+        {:class "text-5xl mb-5"}
         icon)
      ($ :h3
-        {:style {:margin-bottom "15px"}}
+        {:class "mb-4 text-lg font-semibold"}
         title)
      ($ :p
-        {:style {:color "#666"
-                 :line-height "1.6"}}
+        {:class "text-gray-600 leading-relaxed"}
         description)))
 
 (defui features-section []
   ($ :section
-     {:style {:margin "60px 0"}}
+     {:class "my-13"}
      ($ :h2
-        {:style {:text-align "center"
-                 :margin-bottom "40px"
-                 :font-size "2.5rem"}}
+        {:class "text-center mb-10 text-4xl font-bold"}
         "Features")
      ($ :div
-        {:style {:display "grid"
-                 :grid-template-columns "repeat(auto-fit, minmax(300px, 1fr))"
-                 :gap "30px"}}
+        {:class "grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8"}
         ($ feature-card
            {:icon "⚡"
             :title "Lightning Fast"
@@ -80,9 +58,8 @@
      ($ hero-section)
      ($ features-section)
      ($ :section
-        {:style {:margin "60px 0"
-                 :text-align "center"}}
+        {:class "my-15 text-center"}
         ($ :h2
-           {:style {:margin-bottom "30px"}}
+           {:class "mb-8 text-3xl font-bold"}
            "Try the Interactive Counter")
         ($ c/counter {:initial-value 0}))))
