@@ -1,43 +1,58 @@
 (ns main.core
   (:require [ring.adapter.jetty :as jetty]
-            [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.content-type :refer [wrap-content-type]]
-            [ring.util.response :as response]
-            [reitit.ring :as ring]
+            [ring.middleware.file :refer [wrap-file]]
+            [hawk.core :as hawk]
+            [clojure.java.io :as io]
             [main.render :as render]))
 
-(def routes
-  [["/" {:get {:handler (fn [_]
-                          {:status 200
-                           :headers {"Content-Type" "text/html"}
-                           :body (render/render-home)})}}]
-   ["/about" {:get {:handler (fn [_]
-                               {:status 200
-                                :headers {"Content-Type" "text/html"}
-                                :body (render/render-about)})}}]
-   ["/about.html" {:get {:handler (fn [_]
-                                    {:status 200
-                                     :headers {"Content-Type" "text/html"}
-                                     :body (render/render-about)})}}]])
+(defn ensure-directory [path]
+  (let [dir (io/file path)]
+    (when-not (.exists dir)
+      (.mkdirs dir))))
 
-(def handler
-  (ring/ring-handler
-   (ring/router routes)
-   (ring/routes
-    (ring/create-resource-handler {:path "/" :root "public"})
-    (ring/create-default-handler
-     {:not-found (fn [_]
-                   {:status 404
-                    :headers {"Content-Type" "text/html"}
-                    :body "<h1>404 - Page Not Found</h1>"})}))))
+(defn write-file [path content]
+  (ensure-directory (.getParent (io/file path)))
+  (spit path content))
+
+(defn regenerate-files []
+  (println "Regenerating HTML files...")
+  (require '[main.render :as render] :reload-all)
+  (require '[app.pages.home :as home] :reload-all)
+  (require '[app.pages.about :as about] :reload-all)
+  (require '[app.common.components :as c] :reload-all)
+
+  ;; Generate home page
+  (println "  Generating index.html...")
+  (write-file "resources/public/index.html" (render/render-home))
+
+  ;; Generate about page
+  (println "  Generating about.html...")
+  (write-file "resources/public/about.html" (render/render-about))
+
+  (println "Static files regenerated!"))
 
 (defn start-server
   ([] (start-server 3000))
   ([port]
-   (println (str "Starting server on http://localhost:" port))
-   (jetty/run-jetty 
-    (-> handler
-        (wrap-resource "public")
+   (println (str "Starting static file server on http://localhost:" port))
+
+   ;; Generate initial files
+   (regenerate-files)
+
+   ;; Watch for changes and regenerate
+   (println "Watching for file changes in src/app...")
+   (hawk/watch! [{:paths ["src/app"]
+                  :filter hawk/file?
+                  :handler (fn [ctx e]
+                             (println "File changed:" (:file e))
+                             (regenerate-files)
+                             ctx)}])
+
+   ;; Simple static file server
+   (jetty/run-jetty
+    (-> (fn [_] {:status 404 :body "Not found"})  ; Base handler for non-file requests
+        (wrap-file "resources/public")
         wrap-content-type)
     {:port port
      :join? false})))
