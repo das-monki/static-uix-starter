@@ -13,7 +13,9 @@ pom.xml.asc
 # Shadow-cljs
 .shadow-cljs/
 node_modules/
-resources/public/assets/js/
+
+# Generated files
+resources/public/
 
 # IDE
 .idea/
@@ -24,10 +26,6 @@ resources/public/assets/js/
 # OS
 .DS_Store
 Thumbs.db
-
-# Generated static files (comment out if you want to commit them)
-# resources/public/index.html
-# resources/public/about.html
 
 # Logs
 *.log
